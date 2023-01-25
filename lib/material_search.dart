@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 typedef String FormFieldFormatter<T>(T v);
 typedef bool MaterialSearchFilter<T>(T v, String c);
@@ -27,7 +26,7 @@ class MaterialSearchResult<T> extends StatelessWidget {
       child: new Row(
         children: <Widget>[
           new Container(width: 70.0, child: new Icon(icon)),
-          new Expanded(child: new Text(text),
+          new Expanded(child: new Text(text)),
         ],
       ),
       height: 56.0,
@@ -43,7 +42,7 @@ class MaterialSearch<T> extends StatefulWidget {
     this.getResults,
     this.filter,
     this.sort,
-    this.limit: 10,
+    this.limit = 10,
     this.onSelect,
     this.onSubmit,
     this.barBackgroundColor = Colors.white,
@@ -183,7 +182,7 @@ class _MaterialSearchState<T> extends State<MaterialSearch> {
           controller: _controller,
           autofocus: true,
           decoration: new InputDecoration.collapsed(hintText: widget.placeholder),
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.titleLarge,
           onSubmitted: (String value) {
             if (widget.onSubmit != null) {
               widget.onSubmit(value);
@@ -225,9 +224,9 @@ class _MaterialSearchState<T> extends State<MaterialSearch> {
 class _MaterialSearchPageRoute<T> extends MaterialPageRoute<T> {
   _MaterialSearchPageRoute({
     @required WidgetBuilder builder,
-    RouteSettings settings: const RouteSettings(name: 'material_search'),
-    maintainState: true,
-    bool fullscreenDialog: false,
+    RouteSettings settings = const RouteSettings(name: 'material_search'),
+    maintainState = true,
+    bool fullscreenDialog = false,
   }) : assert(builder != null),
         super(builder: builder, settings: settings, maintainState: maintainState, fullscreenDialog: fullscreenDialog);
 }
@@ -237,7 +236,6 @@ class MaterialSearchInput<T> extends StatefulWidget {
     Key key,
     this.onSaved,
     this.validator,
-    this.autovalidate,
     this.placeholder,
     this.formatter,
     this.results,
@@ -249,7 +247,6 @@ class MaterialSearchInput<T> extends StatefulWidget {
 
   final FormFieldSetter<T> onSaved;
   final FormFieldValidator<T> validator;
-  final bool autovalidate;
   final String placeholder;
   final FormFieldFormatter<T> formatter;
 
@@ -297,10 +294,6 @@ class _MaterialSearchInputState<T> extends State<MaterialSearchInput<T>> {
       });
   }
 
-  bool get autovalidate {
-    return widget.autovalidate ?? Form.of(context)?.widget?.autovalidate ?? false;
-  }
-
   bool _isEmpty(field) {
     return field.value == null;
   }
@@ -312,13 +305,11 @@ class _MaterialSearchInputState<T> extends State<MaterialSearchInput<T>> {
         key: _formFieldKey,
         validator: widget.validator,
         onSaved: widget.onSaved,
-        autovalidate: autovalidate,
+        autovalidateMode: AutovalidateMode.disabled,
         builder: (FormFieldState<T> field) {
           return new InputDecorator(
-            baseStyle: valueStyle,
             isEmpty: _isEmpty(field),
             decoration: new InputDecoration(
-              labelStyle: _isEmpty(field) ? null : valueStyle,
               labelText: widget.placeholder,
               errorText: field.errorText,
             ),
