@@ -27,7 +27,7 @@ class MaterialSearchResult<T> extends StatelessWidget {
       child: new Row(
         children: <Widget>[
           new Container(width: 70.0, child: new Icon(icon)),
-          new Expanded(child: new Text(text, style: Theme.of(context).textTheme.subhead)),
+          new Expanded(child: new Text(text),
         ],
       ),
       height: 56.0,
@@ -306,8 +306,6 @@ class _MaterialSearchInputState<T> extends State<MaterialSearchInput<T>> {
   }
 
   Widget build(BuildContext context) {
-    final TextStyle valueStyle = Theme.of(context).textTheme.subhead;
-
     return new InkWell(
       onTap: () => _showMaterialSearch(context),
       child: new FormField<T>(
@@ -327,8 +325,7 @@ class _MaterialSearchInputState<T> extends State<MaterialSearchInput<T>> {
             child: _isEmpty(field) ? null : new Text(
               widget.formatter != null
                 ? widget.formatter(field.value)
-                : field.value.toString(),
-              style: valueStyle
+                : field.value.toString()
             ),
           );
         },
