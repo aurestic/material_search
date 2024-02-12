@@ -18,7 +18,7 @@ class ExampleApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 .contains(new RegExp(r'' + criteria.toLowerCase().trim() + ''));
             },
             onSelect: (dynamic value) => Navigator.of(context).pop(value),
-            onSubmit: (String value) => Navigator.of(context).pop(value),
+            onSubmit: (dynamic value) => Navigator.of(context).pop(value ?? ""),
           ),
         );
       }
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             new Padding(
               padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 50.0),
-              child: new Text("You found: ${_name ?? 'No one'}"),
+              child: new Text("You found: $_name"),
             ),
             new Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     new MaterialButton(
                       child: new Text('Validate'),
                       onPressed: () {
-                        _formKey.currentState.validate();
+                        _formKey.currentState?.validate();
                       }
                     ),
                   ],
